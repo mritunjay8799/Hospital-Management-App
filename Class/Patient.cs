@@ -8,6 +8,7 @@
         private int age;
         private string bloodtype;
         private readonly List<string?> medicalHistory;
+        private int balance;
 
         public Patient(string _name, string _bloodType)
         {
@@ -40,22 +41,29 @@
             }
         }
         public IReadOnlyList<string?> MedicalHistory => medicalHistory.AsReadOnly();
+        public int Balance => balance;
 
 
-        public void AddDiagnosis(string _diagnosis)
+        public void AddDiagnosis(string _diagnosis, int price)
         {
-            if (string.IsNullOrEmpty(_diagnosis)) throw new ArgumentException("Diagnosis is not correct.");
+            if (string.IsNullOrEmpty(_diagnosis)) throw new InvalidDataException("Diagnosis is not correct.");
+
+            if (price < 0)
+            {
+                throw new InvalidDataException("Price can not be negative");
+            }
 
             medicalHistory.Add(_diagnosis);
+            CheckOut(price);
         }
 
         public void Summary()
         {
-            Console.WriteLine("---------Pateint Summary-------");
+            Console.WriteLine("=========Pateint Summary=======");
             Console.WriteLine($"Name              :    {Name}");
             Console.WriteLine($"Age               :    {Age}");
             Console.WriteLine($"BloodType         :    {BloodType}");
-            Console.WriteLine($"Medical History");
+            Console.WriteLine($"Medical History   : ");
 
             if (medicalHistory.Count == 0)
             {
@@ -65,10 +73,25 @@
             {
                 foreach (var rec in medicalHistory)
                 {
-                    Console.WriteLine($"=> {rec}");
+                    Console.WriteLine($"                     {rec}");
                 }
             }
+            Console.WriteLine($"Total Bill        : {Balance}");
             Console.WriteLine("------------------------------");
+        }
+
+        private void ApplyCharge(int amount)    // private setter for balance
+        {
+            if (amount < 0)
+            {
+                throw new InvalidDataException("Amount can not be less than 0.");
+            }
+            balance += amount;
+        }
+
+        public void CheckOut(int amount)
+        {
+            ApplyCharge(amount);
         }
     }
 }
