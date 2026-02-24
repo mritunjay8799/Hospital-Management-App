@@ -8,14 +8,19 @@
 2. Add validation in setters: age must be 0–150, bloodType from a fixed list. Throw descriptive errors on bad input. 
 Test with invalid data and confirm errors are caught gracefully.
 
+3. Add private `_balance`, a public getter, and a private `applyCharge(amount)`. Expose a `checkout()` method that calculates 
+and prints the final bill. No external code touches the balance directly.
+
  */
 
 try
 {
     Patient patient = new Patient("Mahesh", "A+");
-    patient.Age = 200;
-    patient.AddDiagnosis("Malaria");
-    patient.AddDiagnosis("TuberColosis");
+    patient.Age = 20;
+    patient.AddDiagnosis("Malaria", 200);
+    patient.AddDiagnosis("TuberColosis", 300);
+
+    //patient.CheckOut(100);
 
     patient.Summary();
 }
