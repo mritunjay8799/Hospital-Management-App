@@ -12,7 +12,6 @@
 
         public Patient(string _name, string _bloodType)
         {
-            //What will happen if I have setter and connstructor initialisation both.?
             name = _name;
             bloodtype = _bloodType;
             medicalHistory = new List<string?>();
