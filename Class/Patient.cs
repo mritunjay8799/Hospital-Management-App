@@ -2,18 +2,19 @@
 {
     public class Patient
     {
-        private static readonly HashSet<string> ValidBloodTypes = new() { "A-", "A+", "B-", "B+","AB+","AB-","O-","O+" }; 
+        private static readonly HashSet<string> ValidBloodTypes = new() { "A-", "A+", "B-", "B+","AB+","AB-","O-","O+" };
 
-        private readonly string? name;
+        private int id;
+        private string? name;
         private int age;
-        private string bloodtype;
+        private string? bloodtype;
         private readonly List<string?> medicalHistory;
         private int balance;
 
-        public Patient(string _name, string _bloodType)
+        public Patient(int _id, string _name)
         {
+            id = _id;
             name = _name;
-            bloodtype = _bloodType;
             medicalHistory = new List<string?>();
         }
 
@@ -42,6 +43,7 @@
         }
         public IReadOnlyList<string?> MedicalHistory => medicalHistory.AsReadOnly();
         public int Balance => balance;
+        public int Id => id;
 
 
         public void AddDiagnosis(string _diagnosis, int price)
@@ -92,6 +94,32 @@
         public void CheckOut(int amount)
         {
             ApplyCharge(amount);
+        }
+
+        public void GenerateReport(List<Patient> patients)
+        {
+            const int wId = 2;
+            const int wName = 20;
+            const int wAge = 5;
+            const int wDiag = 38;
+            const int wBal = 12;
+
+            string divider = new string('─', wId + wName + wAge + wDiag + wBal+16);
+
+            // Header
+            Console.WriteLine("\n" + divider);
+            Console.WriteLine(
+                $"│ {"ID",-wId} │ {"Name",-wName} │ {"Age",-wAge} │ {"Diagnoses",-wDiag} │ {"Balance (Rs)",wBal} │"
+            );
+            Console.WriteLine(divider);
+
+            foreach (Patient pat in patients)
+            {
+                string diagnosis = pat.medicalHistory.Count > 0 ? string.Join(",", pat.medicalHistory) : "None";
+
+                Console.WriteLine($"│ {pat.Id,-wId} │ {pat.Name,-wName} │ {pat.Age,-wAge} │ {diagnosis,-wDiag} │ {pat.Balance,wBal} │");
+                Console.WriteLine(divider);
+            }
         }
     }
 }

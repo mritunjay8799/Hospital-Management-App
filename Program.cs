@@ -11,18 +11,24 @@ Test with invalid data and confirm errors are caught gracefully.
 3. Add private `_balance`, a public getter, and a private `applyCharge(amount)`. Expose a `checkout()` method that calculates 
 and prints the final bill. No external code touches the balance directly.
 
+4.Add a static `Patient.generateReport(patientArray)` that prints a formatted table: ID | Name | Age | Diagnoses | Balance.
+Run it in `main()` with 3 sample patients.
+
  */
 
 try
 {
-    Patient patient = new Patient("Mahesh", "A+");
+    List<Patient> patients = new List<Patient>();
+    Patient patient = new Patient(1,"Mahesh");
+    patient.BloodType = "A-";
     patient.Age = 20;
     patient.AddDiagnosis("Malaria", 200);
     patient.AddDiagnosis("TuberColosis", 300);
 
     //patient.CheckOut(100);
-
-    patient.Summary();
+    //patient.Summary();
+    patients.Add(patient);
+    patient.GenerateReport(patients);
 }
 catch(Exception ex)
 {
